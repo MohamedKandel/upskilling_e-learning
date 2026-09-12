@@ -201,13 +201,9 @@ Example response:
 
 ```json
 {
-  "token": "...",
-  "user": {
-    "id": 15,
-    "name": "Ahmed Ali",
-    "email": "ahmed@example.com",
-    "role": "STUDENT"
-  }
+  "code": "200",
+  "message": "logged in successfully"
+  "data": "..."
 }
 ```
 
@@ -398,42 +394,19 @@ A session shall contain:
 * Title.
 * Description.
 * Video.
-* Order.
 
 Example:
 
 ```json
 {
   "title": "Introduction to Spring Boot",
-  "description": "Understanding Spring Boot and its architecture.",
-  "order": 1
+  "description": "Understanding Spring Boot and its architecture."
 }
 ```
 
 ---
 
-# 13. Session Ordering
-
-Sessions shall have an explicit order.
-
-Example:
-
-```text
-Course: Spring Boot Fundamentals
-
-1. Introduction
-2. Spring Core
-3. Dependency Injection
-4. Spring MVC
-5. Spring Data JPA
-6. Spring Security
-```
-
-The system shall return sessions ordered by their `order` value.
-
----
-
-# 14. Session Video
+# 13. Session Video
 
 ## FR-12: Upload Session Video
 
@@ -458,13 +431,12 @@ Session
  ├── id
  ├── title
  ├── description
- ├── videoUrl
- └── displayOrder
+ └── videoUrl
 ```
 
 ---
 
-# 15. Student Session Access
+# 14. Student Session Access
 
 ## FR-13: Access Course Sessions
 
@@ -494,7 +466,7 @@ Recommended response:
 
 ---
 
-# 16. Instructor Authorization
+# 15. Instructor Authorization
 
 The backend shall verify ownership before allowing instructors to modify resources.
 
@@ -520,7 +492,7 @@ Authorization must be implemented on the backend and must not rely solely on fro
 
 ---
 
-# 17. Security Requirements
+# 16. Security Requirements
 
 The application shall use **Spring Security**.
 
@@ -551,7 +523,7 @@ Enroll / Access Enrolled Courses
 
 ---
 
-# 18. Non-Functional Requirements
+# 17. Non-Functional Requirements
 
 ## NFR-01: Performance
 
@@ -573,7 +545,7 @@ The system shall:
 
 ---
 
-# 19. Business Rules
+# 18. Business Rules
 
 The following business rules shall apply.
 
@@ -627,7 +599,7 @@ Deleting a course must not leave orphaned sessions or enrollments.
 
 ---
 
-# 20. Future Enhancements
+# 19. Future Enhancements
 
 The architecture should allow future features without requiring major restructuring.
 
@@ -688,7 +660,7 @@ A future administrative role can manage:
 
 ---
 
-# 21. Acceptance Criteria
+# 20. Acceptance Criteria
 
 The first release shall be considered complete when:
 
