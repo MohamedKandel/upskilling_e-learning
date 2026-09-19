@@ -1,0 +1,7 @@
+-- V3: Updating EnrollmentTable
+
+ALTER TABLE SYS_ENROLLMENT
+DROP CONSTRAINT Enrollment_Id_PK;
+
+ALTER TABLE SYS_ENROLLMENT
+DROP COLUMN Enrollment_Id;

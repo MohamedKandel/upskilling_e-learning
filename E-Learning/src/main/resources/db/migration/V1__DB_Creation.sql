@@ -85,4 +85,3 @@ CREATE TABLE SYS_Enrollment
         CONSTRAINT User_Course_Constraint UNIQUE (USER_ID,COURSE_ID)
 
 );
-
