@@ -99,15 +99,15 @@ public class AuthenticationService {
     }
 
     //Public Service:
-    public GeneralResponse<LoginResponseDTO> Login(User user)
+    public GeneralResponse<LoginResponseDTO> Login( AuthRequestDTO LoginRequest)
     {
         try
         {  //checking if this user has an email in the db:
-            Optional<User> existingUser = this._userRepo.findByEmail(user.getEmail());
+            Optional<User> existingUser = this._userRepo.findByEmail(LoginRequest.getEmail());
             if (existingUser.isPresent()) {
 
                 //verifying the submitted password against the BCrypt hash stored in the database
-                if(_passwordEncoder.matches(user.getPassword(), existingUser.get().getPassword())) //if both match
+                if(_passwordEncoder.matches(LoginRequest.getPassword(), existingUser.get().getPassword())) //if both match
                 {
 
                     //if password match db hashed pass, generate jwt for the user
