@@ -13,7 +13,9 @@ import org.springframework.stereotype.Component;
 public interface  UserMapper {
 
     //the only thing I gonna set, Using "setMethods"
+
     @Mapping(source="role.RoleName", target="roleName")
+    @Mapping(target = "password", ignore = true) //Hiding password from the response
     public UserDTO toDTO(User user);
 
 

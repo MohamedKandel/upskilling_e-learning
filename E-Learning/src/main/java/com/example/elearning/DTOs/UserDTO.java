@@ -21,10 +21,8 @@ public class UserDTO {
 
     private LocalDateTime createdAt;
 
-
     private LocalDateTime updatedAt;
     private String  roleName; //insert role name, that's better and check if there's a role with this name, I can get its id
-
 
     //2 relationships:
     //One to many: user if instructor teaches 0,1,many courses
@@ -43,7 +41,7 @@ public class UserDTO {
     //Constructor for what's gonna be displayed
 
     //Won't display hashed passwords, if users info is required
-    public UserDTO(UUID userId, String name, String email, LocalDateTime createdAt, LocalDateTime updatedAt, String roleName, List<UUID> courseTaughtIds, List<UUID> coursesStudentEnrolledIn) {
+    public UserDTO(UUID userId, String name,  String email, LocalDateTime createdAt, LocalDateTime updatedAt, String roleName, List<UUID> courseTaughtIds, List<UUID> coursesStudentEnrolledIn) {
         this.userId = userId;
         Name = name;
         this.email = email;
@@ -125,4 +123,6 @@ public class UserDTO {
     public void setCoursesStudentEnrolledIn(List<UUID> coursesStudentEnrolledIn) {
         this.coursesStudentEnrolledIn = coursesStudentEnrolledIn;
     }
+
+
 }

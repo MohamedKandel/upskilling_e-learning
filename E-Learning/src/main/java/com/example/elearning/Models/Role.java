@@ -14,10 +14,10 @@ public class Role {
     @Id
     @Column(name="Role_Id")
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID RoleId;
+    private UUID roleId;
 
     @Column(name="Role_Name")
-    private String RoleName;
+    private String roleName;
 
 
     //Role belongs to many users:
@@ -28,25 +28,25 @@ public class Role {
     }
 
     public Role(UUID roleId, String roleName, List<User> users) {
-        RoleId = roleId;
-        RoleName = roleName;
+        this.roleId = roleId;
+        this.roleName = roleName;
         this.users = users;
     }
 
     public UUID getRoleId() {
-        return RoleId;
+        return  this.roleId ;
     }
 
     public void setRoleId(UUID roleId) {
-        RoleId = roleId;
+        this.roleId  = roleId;
     }
 
     public String getRoleName() {
-        return RoleName;
+        return this.roleName;
     }
 
     public void setRoleName(String roleName) {
-        RoleName = roleName;
+        this.roleName = roleName;
     }
 
     public List<User> getUsers() {
