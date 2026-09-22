@@ -65,7 +65,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter
                         //*** Giving Authority: About the roles: REVIEW THIS PART
 
                         List<GrantedAuthority> authorities =
-                                List.of(new SimpleGrantedAuthority("ROLE_" + userAcc.getRole().getRoleName()));
+                                List.of(new SimpleGrantedAuthority("ROLE_" + userAcc.getRole()));
 
                         //**.User or Account is authenticated
                         UsernamePasswordAuthenticationToken authToken

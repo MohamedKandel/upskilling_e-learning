@@ -1,6 +1,7 @@
 package com.example.elearning.Models;
 
 
+import com.example.elearning.Enum.Status;
 import jakarta.persistence.*;
 import org.springframework.cglib.core.Local;
 
@@ -17,8 +18,8 @@ public class Session {
 
 //    private String
 
-    @ManyToOne
-    @JoinColumn(name="Status_ID")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "STATUS")
     private Status sessionStatus;
 
     @ManyToOne

@@ -1,6 +1,7 @@
 package com.example.elearning.Models;
 
 
+import com.example.elearning.Enum.Role;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -10,6 +11,10 @@ import java.util.UUID;
 
 @Entity
 @Table(name="SYS_USER")
+
+//Option 8A to avoid nulls
+//User:Supertype  holds shared attributes, subtypes: holds supertype id + the specific attributes
+@Inheritance(strategy = InheritanceType.JOINED)
 public class User {
 
     @Id
@@ -20,11 +25,24 @@ public class User {
     @Column(name="Full_Name")
     private String fullName;
 
+
+    @Enumerated(EnumType.STRING) //Review
+    @Column(name="Role")
+    private Role role;
+
     @Column(name="Email")
     private String email;
 
     @Column(name="Password")
     private String password;
+
+
+    //Soft deletion
+    // 1 = active/present true  --instead of deletion of user record
+    // 0 =  deactivated false
+    @Column(name="Active", nullable = false)
+    private int active = 1;
+
 
     @Column(name="CREATED_AT")
     private LocalDateTime createdAt;
@@ -32,13 +50,6 @@ public class User {
 
     @Column(name="UPDATE_AT")
     private LocalDateTime updatedAt;
-
-
-    //User has only 1 role:
-
-    @ManyToOne
-    @JoinColumn(name="Role_Id") //must matc the actual db column
-    private Role role;
 
     //user if instructor teaches 0,1,many courses
     @OneToMany(mappedBy = "instructor")
@@ -61,11 +72,12 @@ public class User {
     public User() {
     }
 
-    public User(UUID userId, String fullName, String email, String password, LocalDateTime createdAt, LocalDateTime updatedAt, Role role) {
+    public User( UUID userId, String fullName, Role role, String email, String password,int active, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.userId = userId;
         this.fullName = fullName;
         this.email = email;
         this.password = password;
+        this.active = active;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.role = role;
@@ -127,6 +139,14 @@ public class User {
 
     public Role getRole() {
         return role;
+    }
+
+    public int getActive() {
+        return active;
+    }
+
+    public void setActive(int active) {
+        this.active = active;
     }
 
     public void setRole(Role role) {

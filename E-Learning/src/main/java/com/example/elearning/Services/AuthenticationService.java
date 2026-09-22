@@ -5,10 +5,9 @@ import com.example.elearning.DTOs.AuthRequestDTO;
 import com.example.elearning.DTOs.LoginResponseDTO;
 import com.example.elearning.DTOs.UserDTO;
 import com.example.elearning.Enum.ResponseStatus;
+import com.example.elearning.Enum.Role;
 import com.example.elearning.Mappers.UserMapper;
-import com.example.elearning.Models.Role;
 import com.example.elearning.Models.User;
-import com.example.elearning.Repos.RoleRepo;
 import com.example.elearning.Repos.UserRepo;
 import com.example.elearning.Responses.GeneralResponse;
 import jakarta.transaction.Transactional;
@@ -29,13 +28,11 @@ public class AuthenticationService {
     PasswordEncoder _passwordEncoder;
     UserMapper _UserMapper;
 
-    RoleRepo _roleRepo;
-    public AuthenticationService(RoleRepo _roleRepo , UserMapper _UserMapper, UserRepo _userRepo, JavaAuthService _JwtService, PasswordEncoder _passwordEncoder) {
+    public AuthenticationService( UserMapper _UserMapper, UserRepo _userRepo, JavaAuthService _JwtService, PasswordEncoder _passwordEncoder) {
         this._userRepo = _userRepo;
         this._JwtService = _JwtService;
         this._passwordEncoder = _passwordEncoder;
         this._UserMapper = _UserMapper;
-        this._roleRepo = _roleRepo;
     }
 
 
@@ -58,34 +55,19 @@ public class AuthenticationService {
             {
                 //Saving the user to the database
                 User user = new User();
-                //checking if Student role is in the data base first then, setting role by default to: Student
-                Role role = this._roleRepo.findRoleByRoleName("STUDENT");
-                if(role != null)
-                {
-                    user.setRole(role);
-                    user.setEmail(request.getEmail());
-                    user.setPassword(this._passwordEncoder.encode(request.getPassword())); //Encoding the password with Bcrypt
 
-                    User savedUser = this._userRepo.save(user);
+                user.setRole(Role.STUDENT);
+                user.setEmail(request.getEmail());
+                user.setPassword(this._passwordEncoder.encode(request.getPassword())); //Encoding the password with Bcrypt
 
-                    //Displaying new user info using User DTO, I'll convert between User <> UserDTO using the mapper
-                    //instead of using set() methods for each attribute
-                    UserDTO User = this._UserMapper.toDTO(savedUser); //I hid password from the response.
+                User savedUser = this._userRepo.save(user);
+
+                //Displaying new user info using User DTO, I'll convert between User <> UserDTO using the mapper
+                //instead of using set() methods for each attribute
+                UserDTO User = this._UserMapper.toDTO(savedUser); //I hid password from the response.
 
                     return new GeneralResponse<>(ResponseStatus.CREATED, "User Registered Successfully", User);
 
-                }
-                else
-                {
-                    //Cannot find the role: Student in db, sth went wrong/Resource not found:
-
-                    return new GeneralResponse<>(
-                            ResponseStatus.INTERNAL_SERVER_ERROR,
-                            "Default STUDENT role is not found",
-                            null
-                    );
-
-                }
 
             }
 
@@ -106,8 +88,8 @@ public class AuthenticationService {
             Optional<User> existingUser = this._userRepo.findByEmail(LoginRequest.getEmail());
             if (existingUser.isPresent()) {
 
-                //verifying the submitted password against the BCrypt hash stored in the database
-                if(_passwordEncoder.matches(LoginRequest.getPassword(), existingUser.get().getPassword())) //if both match
+                //verifying the submitted password against the BCrypt hash stored in the database and if user is active to avoid deleted user from, login
+                if(_passwordEncoder.matches(LoginRequest.getPassword(), existingUser.get().getPassword()) && existingUser.get().getActive() == 1) //if both match
                 {
 
                     //if password match db hashed pass, generate jwt for the user

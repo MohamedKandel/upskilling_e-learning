@@ -1,13 +1,8 @@
 package com.example.elearning.DTOs;
 
-import com.example.elearning.Models.Session;
-import com.example.elearning.Models.Status;
-import com.example.elearning.Models.User;
-import jakarta.persistence.*;
+import com.example.elearning.Enum.Status;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 public class CourseDTO {
@@ -20,7 +15,7 @@ public class CourseDTO {
     private UUID instructorId;
     private String instructorName;
 
-    private String statusName;
+    private Status statusName;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
@@ -31,7 +26,7 @@ public class CourseDTO {
     public CourseDTO() {
     }
 
-    public CourseDTO(String courseName, String description, String thumbnailUrl, String instructorName, String statusName) {
+    public CourseDTO(String courseName, String description, String thumbnailUrl, String instructorName, Status statusName) {
         this.courseName = courseName;
         this.description = description;
         this.thumbnailUrl = thumbnailUrl;
@@ -87,11 +82,11 @@ public class CourseDTO {
         this.instructorName = instructorName;
     }
 
-    public String getStatusName() {
+    public Status getStatusName() {
         return statusName;
     }
 
-    public void setStatusName(String statusName) {
+    public void setStatusName(Status statusName) {
         this.statusName = statusName;
     }
 

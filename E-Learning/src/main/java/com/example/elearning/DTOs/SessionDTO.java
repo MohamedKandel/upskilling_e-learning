@@ -1,11 +1,5 @@
 package com.example.elearning.DTOs;
 
-import com.example.elearning.Models.Course;
-import com.example.elearning.Models.Status;
-import jakarta.persistence.Column;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-
 import java.time.LocalDateTime;
 import java.util.UUID;
 

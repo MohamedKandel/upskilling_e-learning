@@ -14,7 +14,7 @@ public interface  UserMapper {
 
     //the only thing I gonna set, Using "setMethods"
 
-    @Mapping(source="role.RoleName", target="roleName")
+    @Mapping(source="role", target="roleName") //role enum attribute
     @Mapping(target = "password", ignore = true) //Hiding password from the response
     public UserDTO toDTO(User user);
 
@@ -35,5 +35,5 @@ public interface  UserMapper {
     public void UpdateUserEntity(UserDTO userDto, @MappingTarget User user);
 
 
-    
+
 }

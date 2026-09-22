@@ -1,5 +1,6 @@
 package com.example.elearning.Models;
 
+import com.example.elearning.Enum.Status;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -24,8 +25,8 @@ public class Course {
     @JoinColumn(name="USER_ID") //must be the id shown in the db
     private User instructor;
 
-    @ManyToOne
-    @JoinColumn(name="Status_ID")
+    @Enumerated(EnumType.STRING)
+    @Column(name="Status")
     private Status courseStatus;
 
     @Column(name="COURSE_NAME")
