@@ -4,6 +4,7 @@ package com.example.elearning.Controllers;
 import com.example.elearning.Repos.InstructorRepo;
 import com.example.elearning.Repos.StudentRepo;
 import com.example.elearning.Repos.UserRepo;
+import com.example.elearning.Services.UserService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -11,14 +12,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("api/users")
 public class UserController {
 
-    private InstructorRepo _instructorRepo
-    private  UserRepo _userRepo;
-    private StudentRepo _studentRepo;
 
-    public UserController(InstructorRepo _instructorRepo, UserRepo _userRepo, StudentRepo _studentRepo) {
-        this._instructorRepo = _instructorRepo;
-        this._userRepo = _userRepo;
-        this._studentRepo = _studentRepo;
+    UserService _UserService;
+
+    public UserController(UserService _UserService) {
+        this._UserService = _UserService;
     }
     //Instructor adjusting his years of experiences:
 
