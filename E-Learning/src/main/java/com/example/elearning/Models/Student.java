@@ -1,18 +1,28 @@
-package com.example.elearning.Models;
+ package com.example.elearning.Models;
 
+import jakarta.persistence.*;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.PrimaryKeyJoinColumn;
-import jakarta.persistence.Table;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-@Table(name="SYS_Student")
-@PrimaryKeyJoinColumn(name="USER_ID")
+@Table(name = "SYS_Student")
+@PrimaryKeyJoinColumn(name = "USER_ID")
 public class Student extends User {
 
-    @Column(name="phone_number")
+    @Column(name = "phone_number")
     private String phoneNumber;
+
+    @ManyToMany
+    @JoinTable(
+            name = "SYS_Enrollment",
+            joinColumns = @JoinColumn(name = "USER_ID"),
+            inverseJoinColumns = @JoinColumn(name = "COURSE_ID")
+    )
+    private List<Course> enrolledCourses = new ArrayList<>();
+
+    public Student() {
+    }
 
     public String getPhoneNumber() {
         return phoneNumber;
@@ -20,5 +30,13 @@ public class Student extends User {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public List<Course> getEnrolledCourses() {
+        return enrolledCourses;
+    }
+
+    public void setEnrolledCourses(List<Course> enrolledCourses) {
+        this.enrolledCourses = enrolledCourses;
     }
 }

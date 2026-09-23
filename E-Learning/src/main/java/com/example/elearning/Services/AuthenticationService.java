@@ -43,73 +43,79 @@ public class AuthenticationService {
 //Created this method intentionally so it does not generate a JWT.
     // JWT generation belongs in your login/authentication flow, not in registration.
 
-    @Transactional
-    //Registration Service:
-    public GeneralResponse<?> RegisterUser(AuthRequestDTO request) {
-        try {
-            if (request.getRole() == Role.STUDENT) {
-                Optional<Student> existingStudent = this._StudentRepo.findByEmail(request.getEmail());
+        @Transactional
+        //Registration Service:
+        public GeneralResponse<?> RegisterUser(AuthRequestDTO request) {
+            try {
+                if (request.getRole() == Role.STUDENT) {
+                    Optional<Student> existingStudent = this._StudentRepo.findByEmail(request.getEmail());
 
-                if (existingStudent.isPresent()) {
-                    //conflict 409
-                    return new GeneralResponse<>(ResponseStatus.CONFLICT, "Failed to register, there's a current user attached to your email", null);
+                    if (existingStudent.isPresent()) {
+                        //conflict 409
+                        return new GeneralResponse<>(ResponseStatus.CONFLICT, "Failed to register, there's a current user attached to your email", null);
+                    } else {
+                        //Saving the user to the database
+                        Student student = new Student();
+
+                        student.setFullName(request.getName());
+                        student.setEmail(request.getEmail());
+                        student.setPassword(this._passwordEncoder.encode(request.getPassword()));
+                        student.setRole(request.getRole());
+                        student.setActive(1);
+
+                        Student savedStudent = this._StudentRepo.save(student);
+
+                        //Displaying new user info using User DTO, I'll convert between User <> UserDTO using the mapper
+                        //instead of using set() methods for each attribute
+                        StudentDTO studentInfo = this._UserMapper.studentToDTO(savedStudent); //I hid password from the response.
+
+                        return new GeneralResponse<>(ResponseStatus.CREATED, "Student Registered Successfully", studentInfo);
+
+
+                    }
+                } else if (request.getRole() == Role.INSTRUCTOR) {
+
+                    Optional<Instructor> existingInstructor = this._instructorRepo.findByEmail(request.getEmail());
+
+                    if (existingInstructor.isPresent()) {
+                        //conflict 409
+                        return new GeneralResponse<>(ResponseStatus.CONFLICT, "Failed to register, there's a current user attached to your email", null);
+                    } else {
+                        //Saving the user to the database
+                        Instructor instructor = new Instructor();
+
+                        instructor.setFullName(request.getName());
+                        instructor.setEmail(request.getEmail());
+                        instructor.setPassword(
+                                this._passwordEncoder.encode(request.getPassword())
+                        );
+                        instructor.setRole(request.getRole());
+                        instructor.setActive(1);
+                        Instructor savedinstructor = this._instructorRepo.save(instructor);
+
+                        //Displaying new user info using User DTO, I'll convert between User <> UserDTO using the mapper
+                        //instead of using set() methods for each attribute
+                        InstructorDTO instructorInfo = this._UserMapper.instructorToDTO(savedinstructor); //I hid password from the response.
+
+                        return new GeneralResponse<>(ResponseStatus.CREATED, "Instructor Registered Successfully", instructorInfo);
+
+
+                    }
+
                 } else {
-                    //Saving the user to the database
-                    Student student = new Student();
-
-                    student.setEmail(request.getEmail());
-                    student.setPassword(this._passwordEncoder.encode(request.getPassword())); //Encoding the password with Bcrypt
-
-                    Student savedStudent = this._StudentRepo.save(student);
-
-                    //Displaying new user info using User DTO, I'll convert between User <> UserDTO using the mapper
-                    //instead of using set() methods for each attribute
-                    StudentDTO studentInfo = this._UserMapper.studentToDTO(savedStudent); //I hid password from the response.
-
-                    return new GeneralResponse<>(ResponseStatus.CREATED, "Student Registered Successfully", studentInfo);
-
+                    //Role is null
+                    return new GeneralResponse<>(
+                            ResponseStatus.BAD_REQUEST,
+                            "Role is required",
+                            null);
 
                 }
-            } else if (request.getRole() == Role.INSTRUCTOR) {
 
-                Optional<Instructor> existingInstructor = this._instructorRepo.findByEmail(request.getEmail());
-
-                if (existingInstructor.isPresent()) {
-                    //conflict 409
-                    return new GeneralResponse<>(ResponseStatus.CONFLICT, "Failed to register, there's a current user attached to your email", null);
-                } else {
-                    //Saving the user to the database
-                    Instructor instructor = new Instructor();
-
-                    instructor.setEmail(request.getEmail());
-
-                    instructor.setPassword(this._passwordEncoder.encode(request.getPassword())); //Encoding the password with Bcrypt
-
-                    Instructor savedinstructor = this._instructorRepo.save(instructor);
-
-                    //Displaying new user info using User DTO, I'll convert between User <> UserDTO using the mapper
-                    //instead of using set() methods for each attribute
-                    InstructorDTO instructorInfo = this._UserMapper.instructorToDTO(savedinstructor); //I hid password from the response.
-
-                    return new GeneralResponse<>(ResponseStatus.CREATED, "Instructor Registered Successfully", instructorInfo);
-
-
-                }
-
-            } else {
-                //Role is null
-                return new GeneralResponse<>(
-                        ResponseStatus.BAD_REQUEST,
-                        "Role is required",
-                        null);
-
+            } catch (Exception ex) {
+                ex.printStackTrace(); //to log any exception /error
+                return new GeneralResponse<>(ResponseStatus.INTERNAL_SERVER_ERROR, null);
             }
-
-        } catch (Exception ex) {
-            ex.printStackTrace(); //to log any exception /error
-            return new GeneralResponse<>(ResponseStatus.INTERNAL_SERVER_ERROR, null);
         }
-    }
 
     public GeneralResponse<LoginResponseDTO> Login(AuthRequestDTO LoginRequest) {
         try {

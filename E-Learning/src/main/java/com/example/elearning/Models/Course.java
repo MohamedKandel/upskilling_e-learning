@@ -8,56 +8,52 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-
 @Entity
-@Table(name="SYS_COURSE")
+@Table(name = "SYS_COURSE")
 public class Course {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name="COURSE_ID")
+    @Column(name = "COURSE_ID")
     private UUID courseId;
 
-    //Course ---- USER(if instructor)
-    //can be taught by one instructor
-
     @ManyToOne
-    @JoinColumn(name="USER_ID") //must be the id shown in the db
-    private User instructor;
+    @JoinColumn(name = "USER_ID")
+    private Instructor instructor;
 
     @Enumerated(EnumType.STRING)
-    @Column(name="Status")
+    @Column(name = "Status")
     private Status courseStatus;
 
-    @Column(name="COURSE_NAME")
+    @Column(name = "COURSE_NAME")
     private String courseName;
 
-    @Column(name="DESCRIPTION")
+    @Column(name = "DESCRIPTION")
     private String description;
 
-    @Column(name="THUMBNAIL_URL")
+    @Column(name = "THUMBNAIL_URL")
     private String thumbnailUrl;
 
-
-    @Column(name="CREATED_AT")
+    @Column(name = "CREATED_AT")
     LocalDateTime createdAt;
 
-    @Column(name="UPDATED_AT")
+    @Column(name = "UPDATED_AT")
     LocalDateTime updatedAt;
 
-    @ManyToMany (mappedBy = "courses") //the associative entity relationship
-    List<User> students = new ArrayList<>();
-    //Course --- USER(if Student) --there's enrollment in between(Associative entity)
+    @ManyToMany(mappedBy = "enrolledCourses")
+    List<Student> students = new ArrayList<>();
 
-    //Course has many sessions
     @OneToMany(mappedBy = "course")
     List<Session> courseSessions = new ArrayList<>();
 
     public Course() {
     }
 
+    public Course(UUID courseId, Instructor instructor, Status courseStatus,
+                  String courseName, String description, String thumbnailUrl,
+                  LocalDateTime createdAt, LocalDateTime updatedAt,
+                  List<Student> students, List<Session> courseSessions) {
 
-    public Course(UUID courseId, User instructor, Status courseStatus, String courseName, String description, String thumbnailUrl, LocalDateTime createdAt, LocalDateTime updatedAt, List<User> students, List<Session> courseSessions) {
         this.courseId = courseId;
         this.instructor = instructor;
         this.courseStatus = courseStatus;
@@ -69,7 +65,6 @@ public class Course {
         this.students = students;
         this.courseSessions = courseSessions;
     }
-
 
     public UUID getCourseId() {
         return courseId;
@@ -87,11 +82,11 @@ public class Course {
         this.courseStatus = courseStatus;
     }
 
-    public User getInstructor() {
-        return this.instructor;
+    public Instructor getInstructor() {
+        return instructor;
     }
 
-    public void setInstructor(User instructor) {
+    public void setInstructor(Instructor instructor) {
         this.instructor = instructor;
     }
 
@@ -119,11 +114,11 @@ public class Course {
         this.thumbnailUrl = thumbnailUrl;
     }
 
-    public List<User> getStudents() {
+    public List<Student> getStudents() {
         return students;
     }
 
-    public void setStudents(List<User> students) {
+    public void setStudents(List<Student> students) {
         this.students = students;
     }
 
@@ -136,17 +131,14 @@ public class Course {
     }
 
     @PrePersist
-    public void createdAt()
-    {
+    public void createdAt() {
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
-
     }
-    @PreUpdate
-    public void UpdatedAt()
-    {
-        this.updatedAt = LocalDateTime.now();
 
+    @PreUpdate
+    public void UpdatedAt() {
+        this.updatedAt = LocalDateTime.now();
     }
 
     public LocalDateTime getCreatedAt() {
