@@ -7,8 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class UserDTO {
-
+public class InstructorDTO {
     private UUID userId;
 
     private String Name;
@@ -16,6 +15,7 @@ public class UserDTO {
     private String email;
 
     private String password;
+    int Experience_Years;
 
     private LocalDateTime createdAt;
 
@@ -32,25 +32,33 @@ public class UserDTO {
 
     //Empty Constructor - non-parametrized
 
-    public UserDTO() {
+    public InstructorDTO() {
     }
 
 
     //Constructor for what's gonna be displayed
 
     //Won't display hashed passwords, if users info is required
-    public UserDTO(UUID userId, String name,  String email, LocalDateTime createdAt, LocalDateTime updatedAt, Role roleName, List<UUID> courseTaughtIds, List<UUID> coursesStudentEnrolledIn) {
+    public InstructorDTO(UUID userId, String name,  String email, int Experience_Years, LocalDateTime createdAt, LocalDateTime updatedAt, Role roleName, List<UUID> courseTaughtIds, List<UUID> coursesStudentEnrolledIn) {
         this.userId = userId;
         Name = name;
         this.email = email;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.roleName = roleName;
+        this.Experience_Years = Experience_Years;
         this.courseTaughtIds = courseTaughtIds;
         this.coursesStudentEnrolledIn = coursesStudentEnrolledIn;
 
     }
 
+    public int getExperience_Years() {
+        return Experience_Years;
+    }
+
+    public void setExperience_Years(int experience_Years) {
+        Experience_Years = experience_Years;
+    }
 
     public UUID getUserId() {
         return userId;

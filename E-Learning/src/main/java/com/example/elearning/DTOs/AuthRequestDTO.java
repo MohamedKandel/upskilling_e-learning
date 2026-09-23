@@ -1,5 +1,7 @@
 package com.example.elearning.DTOs;
 
+import com.example.elearning.Enum.Role;
+
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -15,13 +17,16 @@ public class AuthRequestDTO {
 
     private String password;
 
+    private Role role;
+
     public AuthRequestDTO() {
     }
 
-    public AuthRequestDTO(String name, String email, String password) {
+    public AuthRequestDTO(String name, String email, String password, Role role) {
         Name = name;
         this.email = email;
         this.password = password;
+        this.role = role;
     }
 
     public AuthRequestDTO(String email, String password) {
@@ -51,5 +56,13 @@ public class AuthRequestDTO {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }

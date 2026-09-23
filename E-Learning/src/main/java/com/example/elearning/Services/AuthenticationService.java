@@ -1,13 +1,15 @@
 package com.example.elearning.Services;
 
 
-import com.example.elearning.DTOs.AuthRequestDTO;
-import com.example.elearning.DTOs.LoginResponseDTO;
-import com.example.elearning.DTOs.UserDTO;
+import com.example.elearning.DTOs.*;
 import com.example.elearning.Enum.ResponseStatus;
 import com.example.elearning.Enum.Role;
 import com.example.elearning.Mappers.UserMapper;
+import com.example.elearning.Models.Instructor;
+import com.example.elearning.Models.Student;
 import com.example.elearning.Models.User;
+import com.example.elearning.Repos.InstructorRepo;
+import com.example.elearning.Repos.StudentRepo;
 import com.example.elearning.Repos.UserRepo;
 import com.example.elearning.Responses.GeneralResponse;
 import jakarta.transaction.Transactional;
@@ -27,109 +29,169 @@ public class AuthenticationService {
     JavaAuthService _JwtService;
     PasswordEncoder _passwordEncoder;
     UserMapper _UserMapper;
+    StudentRepo _StudentRepo;
+    InstructorRepo _instructorRepo;
 
-    public AuthenticationService( UserMapper _UserMapper, UserRepo _userRepo, JavaAuthService _JwtService, PasswordEncoder _passwordEncoder) {
+    public AuthenticationService(UserRepo _userRepo, JavaAuthService _JwtService, PasswordEncoder _passwordEncoder, UserMapper _UserMapper, StudentRepo _StudentRepo, InstructorRepo _instructorRepo) {
         this._userRepo = _userRepo;
         this._JwtService = _JwtService;
         this._passwordEncoder = _passwordEncoder;
         this._UserMapper = _UserMapper;
+        this._StudentRepo = _StudentRepo;
+        this._instructorRepo = _instructorRepo;
     }
-
-
-    //Created this method intentionally so it does not generate a JWT.
+//Created this method intentionally so it does not generate a JWT.
     // JWT generation belongs in your login/authentication flow, not in registration.
 
     @Transactional
     //Registration Service:
-    public GeneralResponse<UserDTO> RegisterUser(AuthRequestDTO request)
-    {
-        try
-        {
-            Optional<User> existingUser = this._userRepo.findByEmail(request.getEmail());
-            if(existingUser.isPresent())
-            {
-                //conflict 409
-               return new GeneralResponse<>(ResponseStatus.CONFLICT, "Failed to register, there's a current user attached to your email", null);
-            }
-            else
-            {
-                //Saving the user to the database
-                User user = new User();
+    public GeneralResponse<?> RegisterUser(AuthRequestDTO request) {
+        try {
+            if (request.getRole() == Role.STUDENT) {
+                Optional<Student> existingStudent = this._StudentRepo.findByEmail(request.getEmail());
 
-                user.setRole(Role.STUDENT);
-                user.setEmail(request.getEmail());
-                user.setPassword(this._passwordEncoder.encode(request.getPassword())); //Encoding the password with Bcrypt
+                if (existingStudent.isPresent()) {
+                    //conflict 409
+                    return new GeneralResponse<>(ResponseStatus.CONFLICT, "Failed to register, there's a current user attached to your email", null);
+                } else {
+                    //Saving the user to the database
+                    Student student = new Student();
 
-                User savedUser = this._userRepo.save(user);
+                    student.setEmail(request.getEmail());
+                    student.setPassword(this._passwordEncoder.encode(request.getPassword())); //Encoding the password with Bcrypt
 
-                //Displaying new user info using User DTO, I'll convert between User <> UserDTO using the mapper
-                //instead of using set() methods for each attribute
-                UserDTO User = this._UserMapper.toDTO(savedUser); //I hid password from the response.
+                    Student savedStudent = this._StudentRepo.save(student);
 
-                    return new GeneralResponse<>(ResponseStatus.CREATED, "User Registered Successfully", User);
+                    //Displaying new user info using User DTO, I'll convert between User <> UserDTO using the mapper
+                    //instead of using set() methods for each attribute
+                    StudentDTO studentInfo = this._UserMapper.studentToDTO(savedStudent); //I hid password from the response.
 
-
-            }
-
-        }
-        catch(Exception ex) {
-            ex.printStackTrace(); //to log any exception /error
-            return new GeneralResponse<>(ResponseStatus.INTERNAL_SERVER_ERROR, null);
-
-    }
-
-    }
-
-    //Public Service:
-    public GeneralResponse<LoginResponseDTO> Login( AuthRequestDTO LoginRequest)
-    {
-        try
-        {  //checking if this user has an email in the db:
-            Optional<User> existingUser = this._userRepo.findByEmail(LoginRequest.getEmail());
-            if (existingUser.isPresent()) {
-
-                //verifying the submitted password against the BCrypt hash stored in the database and if user is active to avoid deleted user from, login
-                if(_passwordEncoder.matches(LoginRequest.getPassword(), existingUser.get().getPassword()) && existingUser.get().getActive() == 1) //if both match
-                {
-
-                    //if password match db hashed pass, generate jwt for the user
-
-                    String token = this._JwtService.GeneratedToken(existingUser.get());
-
-                    //Converting with mapper between user and user DTO:
-                    UserDTO loggedInUser = this._UserMapper.toDTO(existingUser.get());
-
-
-                    //Displaying suitable login response
-                    LoginResponseDTO LoginResponse = new LoginResponseDTO(loggedInUser, token);
-                    return new GeneralResponse<>(ResponseStatus.OK, "User Logged in Successfully!", LoginResponse); //OK:200 - Correct credentials + JWT
+                    return new GeneralResponse<>(ResponseStatus.CREATED, "Student Registered Successfully", studentInfo);
 
 
                 }
+            } else if (request.getRole() == Role.INSTRUCTOR) {
 
-                else
-                {
-                    //Entered password by the user who's trying to login is incorrect:
+                Optional<Instructor> existingInstructor = this._instructorRepo.findByEmail(request.getEmail());
 
-                    return new GeneralResponse<>(ResponseStatus.UNAUTHORIZED, "Invalid Email or Password", null); //401: user does not exit or credentials are invalid
+                if (existingInstructor.isPresent()) {
+                    //conflict 409
+                    return new GeneralResponse<>(ResponseStatus.CONFLICT, "Failed to register, there's a current user attached to your email", null);
+                } else {
+                    //Saving the user to the database
+                    Instructor instructor = new Instructor();
+
+                    instructor.setEmail(request.getEmail());
+
+                    instructor.setPassword(this._passwordEncoder.encode(request.getPassword())); //Encoding the password with Bcrypt
+
+                    Instructor savedinstructor = this._instructorRepo.save(instructor);
+
+                    //Displaying new user info using User DTO, I'll convert between User <> UserDTO using the mapper
+                    //instead of using set() methods for each attribute
+                    InstructorDTO instructorInfo = this._UserMapper.instructorToDTO(savedinstructor); //I hid password from the response.
+
+                    return new GeneralResponse<>(ResponseStatus.CREATED, "Instructor Registered Successfully", instructorInfo);
 
 
                 }
 
             } else {
-                //no email:
-                return new GeneralResponse<>(ResponseStatus.UNAUTHORIZED, "Invalid Email or Password", null); //401: user does not exit or credentials are invalid
+                //Role is null
+                return new GeneralResponse<>(
+                        ResponseStatus.BAD_REQUEST,
+                        "Role is required",
+                        null);
+
             }
 
-        }
-        catch(Exception ex)
-        {
-            ex.printStackTrace();
+        } catch (Exception ex) {
+            ex.printStackTrace(); //to log any exception /error
             return new GeneralResponse<>(ResponseStatus.INTERNAL_SERVER_ERROR, null);
         }
+    }
 
+    public GeneralResponse<LoginResponseDTO> Login(AuthRequestDTO LoginRequest) {
+        try {
+
+            // Checking if this user has an email in the database
+            Optional<User> existingUser =
+                    this._userRepo.findByEmail(LoginRequest.getEmail());
+
+            if (existingUser.isEmpty()) {
+
+                // No user with this email
+                return new GeneralResponse<>(
+                        ResponseStatus.UNAUTHORIZED,
+                        "Invalid Email or Password",
+                        null
+                );
+            }
+
+            User user = existingUser.get();
+
+            // Checking if the user is active
+            // 1 = active
+            // 0 = deactivated
+            if (user.getActive() != 1) {
+
+                return new GeneralResponse<>(
+                        ResponseStatus.UNAUTHORIZED,
+                        "Invalid Email or Password",
+                        null
+                );
+            }
+
+            // Verifying the submitted password against
+            // the BCrypt hash stored in the database
+            if (!_passwordEncoder.matches(
+                    LoginRequest.getPassword(),
+                    user.getPassword()
+            )) {
+
+                return new GeneralResponse<>(
+                        ResponseStatus.UNAUTHORIZED,
+                        "Invalid Email or Password",
+                        null
+                );
+            }
+
+            // Authentication successful
+            // Generate JWT for the authenticated user
+            String token = this._JwtService.GeneratedToken(user);
+
+            // Convert User entity to UserDTO
+            UserDTO loggedInUser = this._UserMapper.toDTO(user);
+
+            // Create login response
+            LoginResponseDTO loginResponse =
+                    new LoginResponseDTO(loggedInUser, token);
+
+            return new GeneralResponse<>(
+                    ResponseStatus.OK,
+                    "User Logged in Successfully!",
+                    loginResponse
+            );
+
+        } catch (Exception ex) {
+
+            ex.printStackTrace();
+
+            return new GeneralResponse<>(
+                    ResponseStatus.INTERNAL_SERVER_ERROR,
+                    null
+            );
+        }
     }
 
 
 
+
+
+
+
 }
+
+
+
+
