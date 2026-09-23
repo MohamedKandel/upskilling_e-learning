@@ -10,7 +10,7 @@ import java.util.UUID;
 public class InstructorDTO {
     private UUID userId;
 
-    private String Name;
+    private String fullName;
 
     private String email;
 
@@ -39,9 +39,9 @@ public class InstructorDTO {
     //Constructor for what's gonna be displayed
 
     //Won't display hashed passwords, if users info is required
-    public InstructorDTO(UUID userId, String name,  String email, int Experience_Years, LocalDateTime createdAt, LocalDateTime updatedAt, Role roleName, List<UUID> courseTaughtIds, List<UUID> coursesStudentEnrolledIn) {
+    public InstructorDTO(UUID userId, String fullName,  String email, int Experience_Years, LocalDateTime createdAt, LocalDateTime updatedAt, Role roleName, List<UUID> courseTaughtIds, List<UUID> coursesStudentEnrolledIn) {
         this.userId = userId;
-        Name = name;
+        this.fullName = fullName;
         this.email = email;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -53,15 +53,15 @@ public class InstructorDTO {
     }
 
     public int getExperience_Years() {
-        return Experience_Years;
+        return this.Experience_Years;
     }
 
     public void setExperience_Years(int experience_Years) {
-        Experience_Years = experience_Years;
+        this.Experience_Years = experience_Years;
     }
 
     public UUID getUserId() {
-        return userId;
+        return this.userId;
     }
 
     public void setUserId(UUID userId) {
@@ -69,7 +69,7 @@ public class InstructorDTO {
     }
 
     public String getEmail() {
-        return email;
+        return this.email;
     }
 
     public void setEmail(String email) {
@@ -77,15 +77,15 @@ public class InstructorDTO {
     }
 
     public String getName() {
-        return Name;
+        return this.fullName;
     }
 
-    public void setName(String name) {
-        Name = name;
+    public void setName(String fullName) {
+        this.fullName = fullName;
     }
 
     public String getPassword() {
-        return password;
+        return this.password;
     }
 
     public void setPassword(String password) {
@@ -93,7 +93,7 @@ public class InstructorDTO {
     }
 
     public LocalDateTime getCreatedAt() {
-        return createdAt;
+        return this.createdAt;
     }
 
     public void setCreatedAt(LocalDateTime createdAt) {
@@ -101,7 +101,7 @@ public class InstructorDTO {
     }
 
     public LocalDateTime getUpdatedAt() {
-        return updatedAt;
+        return this.updatedAt;
     }
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
@@ -109,7 +109,7 @@ public class InstructorDTO {
     }
 
     public List<UUID> getCourseTaughtIds() {
-        return courseTaughtIds;
+        return this.courseTaughtIds;
     }
 
     public void setCourseTaughtIds(List<UUID> courseTaughtIds) {
@@ -117,7 +117,7 @@ public class InstructorDTO {
     }
 
     public Role getRoleName() {
-        return roleName;
+        return this.roleName;
     }
 
     public void setRoleName(Role roleName) {

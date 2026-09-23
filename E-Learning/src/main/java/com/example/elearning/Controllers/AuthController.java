@@ -1,6 +1,7 @@
 package com.example.elearning.Controllers;
 
 import com.example.elearning.DTOs.AuthRequestDTO;
+import com.example.elearning.DTOs.LoginRequestDTO;
 import com.example.elearning.Responses.GeneralResponse;
 import com.example.elearning.Services.AuthenticationService;
 import org.springframework.http.HttpStatus;
@@ -50,7 +51,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<GeneralResponse<?>> Login(
-            @RequestBody AuthRequestDTO LoginRequest) {
+            @RequestBody LoginRequestDTO LoginRequest) {
 
         GeneralResponse<?> response =
                 this._authenticationService.Login(LoginRequest);

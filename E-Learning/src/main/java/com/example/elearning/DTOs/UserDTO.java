@@ -11,7 +11,7 @@ public class UserDTO {
 
     private UUID userId;
 
-    private String Name;
+    private String fullName;
 
     private String email;
 
@@ -39,9 +39,9 @@ public class UserDTO {
     //Constructor for what's gonna be displayed
 
     //Won't display hashed passwords, if users info is required
-    public UserDTO(UUID userId, String name,  String email, LocalDateTime createdAt, LocalDateTime updatedAt, Role roleName, List<UUID> courseTaughtIds, List<UUID> coursesStudentEnrolledIn) {
+    public UserDTO(UUID userId, String fullName,  String email, LocalDateTime createdAt, LocalDateTime updatedAt, Role roleName, List<UUID> courseTaughtIds, List<UUID> coursesStudentEnrolledIn) {
         this.userId = userId;
-        Name = name;
+        this.fullName = fullName;
         this.email = email;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -53,7 +53,7 @@ public class UserDTO {
 
 
     public UUID getUserId() {
-        return userId;
+        return this.userId;
     }
 
     public void setUserId(UUID userId) {
@@ -61,7 +61,7 @@ public class UserDTO {
     }
 
     public String getEmail() {
-        return email;
+        return this.email;
     }
 
     public void setEmail(String email) {
@@ -69,15 +69,15 @@ public class UserDTO {
     }
 
     public String getName() {
-        return Name;
+        return this.fullName;
     }
 
-    public void setName(String name) {
-        Name = name;
+    public void setName(String fullName) {
+        this.fullName = fullName;
     }
 
     public String getPassword() {
-        return password;
+        return this.password;
     }
 
     public void setPassword(String password) {
@@ -85,7 +85,7 @@ public class UserDTO {
     }
 
     public LocalDateTime getCreatedAt() {
-        return createdAt;
+        return this.createdAt;
     }
 
     public void setCreatedAt(LocalDateTime createdAt) {
@@ -93,7 +93,7 @@ public class UserDTO {
     }
 
     public LocalDateTime getUpdatedAt() {
-        return updatedAt;
+        return this.updatedAt;
     }
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
@@ -101,7 +101,7 @@ public class UserDTO {
     }
 
     public List<UUID> getCourseTaughtIds() {
-        return courseTaughtIds;
+        return this.courseTaughtIds;
     }
 
     public void setCourseTaughtIds(List<UUID> courseTaughtIds) {
@@ -109,7 +109,7 @@ public class UserDTO {
     }
 
     public Role getRoleName() {
-        return roleName;
+        return this.roleName;
     }
 
     public void setRoleName(Role roleName) {

@@ -17,23 +17,15 @@ public interface UserMapper {
     // Mapping User -> UserDTO
 
 
-    @Mapping(source = "fullName", target = "name")
     @Mapping(source = "role", target = "roleName")
     @Mapping(target = "password", ignore = true)
-
-    // These are DTO fields.
-    // They will be handled separately using set methods.
     @Mapping(target = "courseTaughtIds", ignore = true)
     @Mapping(target = "coursesStudentEnrolledIn", ignore = true)
-
     public UserDTO toDTO(User user);
-
 
 
     // Mapping Student -> StudentDTO
 
-
-    @Mapping(source = "fullName", target = "name")
     @Mapping(source = "role", target = "roleName")
     @Mapping(target = "password", ignore = true)
 
@@ -49,7 +41,6 @@ public interface UserMapper {
     // Mapping Instructor -> InstructorDTO
 
 
-    @Mapping(source = "fullName", target = "name")
     @Mapping(source = "role", target = "roleName")
     @Mapping(target = "password", ignore = true)
 
@@ -64,23 +55,18 @@ public interface UserMapper {
     // Creating new User from UserDTO
 
 
-    @Mapping(source = "name", target = "fullName")
     @Mapping(source = "roleName", target = "role")
-
     // Password is handled by AuthenticationService
     @Mapping(target = "password", ignore = true)
 
     // Active is handled by the service
     @Mapping(target = "active", ignore = true)
-
     public User newUser(UserDTO userDto);
 
 
 
     // UserDTO -> existing User
 
-
-    @Mapping(source = "name", target = "fullName")
     @Mapping(source = "roleName", target = "role")
 
     @Mapping(target = "password", ignore = true)
@@ -96,7 +82,6 @@ public interface UserMapper {
     // StudentDTO -> existing Student
 
 
-    @Mapping(source = "name", target = "fullName")
     @Mapping(source = "roleName", target = "role")
     @Mapping(source = "phoneNumber", target = "phoneNumber")
 
@@ -115,11 +100,8 @@ public interface UserMapper {
 
     // InstructorDTO -> existing Instructor
 
-    @Mapping(source = "name", target = "fullName")
     @Mapping(source = "roleName", target = "role")
 
-    // IMPORTANT:
-    // Your JavaBean property is experience_Years
     @Mapping(source = "experience_Years", target = "experience_Years")
 
     @Mapping(target = "password", ignore = true)

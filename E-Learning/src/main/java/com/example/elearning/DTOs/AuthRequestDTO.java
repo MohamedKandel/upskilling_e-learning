@@ -11,7 +11,7 @@ import java.util.UUID;
 public class AuthRequestDTO {
 
 
-    private String Name;
+    private String fullName;
 
     private String email;
 
@@ -22,8 +22,8 @@ public class AuthRequestDTO {
     public AuthRequestDTO() {
     }
 
-    public AuthRequestDTO(String name, String email, String password, Role role) {
-        Name = name;
+    public AuthRequestDTO(String fullName, String email, String password, Role role) {
+        this.fullName = fullName;
         this.email = email;
         this.password = password;
         this.role = role;
@@ -35,11 +35,11 @@ public class AuthRequestDTO {
     }
 
     public String getName() {
-        return Name;
+        return this.fullName;
     }
 
-    public void setName(String name) {
-        Name = name;
+    public void setName(String fullName) {
+        this.fullName = fullName;
     }
 
     public String getEmail() {

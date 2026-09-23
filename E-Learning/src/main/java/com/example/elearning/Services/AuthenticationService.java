@@ -43,6 +43,7 @@ public class AuthenticationService {
 //Created this method intentionally so it does not generate a JWT.
     // JWT generation belongs in your login/authentication flow, not in registration.
 
+    //? -> returning 1-Student DTO 2-Retuning InstructorDTO
         @Transactional
         //Registration Service:
         public GeneralResponse<?> RegisterUser(AuthRequestDTO request) {
@@ -117,7 +118,7 @@ public class AuthenticationService {
             }
         }
 
-    public GeneralResponse<LoginResponseDTO> Login(AuthRequestDTO LoginRequest) {
+    public GeneralResponse<LoginResponseDTO> Login(LoginRequestDTO LoginRequest) {
         try {
 
             // Checking if this user has an email in the database
