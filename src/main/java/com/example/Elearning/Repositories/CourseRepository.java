@@ -10,5 +10,5 @@ import com.example.Elearning.Models.Instructor;
 
 public interface CourseRepository extends JpaRepository<Course, UUID> {
 
-    List<Course> findByInstructor(Instructor instructor);
+     List<Course> findByInstructor_AccountId(int instructorId);
 }

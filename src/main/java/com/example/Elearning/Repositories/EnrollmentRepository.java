@@ -5,15 +5,13 @@ import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.example.Elearning.Models.Course;
 import com.example.Elearning.Models.Enrollment;
-import com.example.Elearning.Models.Student;
 
 public interface EnrollmentRepository extends JpaRepository<Enrollment, UUID> {
 
-    boolean existsByStudentAndCourse(Student student, Course course);
+    boolean existsByStudent_AccountIdAndCourse_Id(int studentId, UUID courseId);
 
-    List<Enrollment> findByStudent(Student student);
+    List<Enrollment> findByStudent_AccountId(int studentId);
 
-    List<Enrollment> findByCourse(Course course);
+    List<Enrollment> findByCourse_Id(UUID courseId);
 }
