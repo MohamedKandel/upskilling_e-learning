@@ -16,7 +16,6 @@ public interface UserMapper {
 
     // Mapping User -> UserDTO
 
-
     @Mapping(source = "role", target = "roleName")
     @Mapping(target = "password", ignore = true)
     @Mapping(target = "courseTaughtIds", ignore = true)
@@ -25,7 +24,6 @@ public interface UserMapper {
 
 
     // Mapping Student -> StudentDTO
-
     @Mapping(source = "role", target = "roleName")
     @Mapping(target = "password", ignore = true)
 

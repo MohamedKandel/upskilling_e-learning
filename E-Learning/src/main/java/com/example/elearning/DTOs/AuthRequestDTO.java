@@ -34,11 +34,11 @@ public class AuthRequestDTO {
         this.password = password;
     }
 
-    public String getName() {
-        return this.fullName;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setName(String fullName) {
+    public void setFullName(String fullName) {
         this.fullName = fullName;
     }
 
@@ -50,19 +50,19 @@ public class AuthRequestDTO {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public Role getRole() {
         return role;
     }
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

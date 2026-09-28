@@ -39,10 +39,10 @@ public class SecurityConfig {
                                         "/swagger-ui/**",
                                         "/v3/api-docs/**",
                                         "/swagger-resources/**",
-                                        "/webjars/**",
                                         "/api/auth/**"
-                                ).permitAll()
+                                ).permitAll()  //add last api with the role
                                 .anyRequest().authenticated()
+
                 )
                 .addFilterBefore(
                         _JwtAuthFilter,

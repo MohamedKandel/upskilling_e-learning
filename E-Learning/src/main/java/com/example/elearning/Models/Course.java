@@ -31,6 +31,7 @@ public class Course {
     @Column(name = "DESCRIPTION")
     private String description;
 
+    //Data type Byte array --- Blob/oracle
     @Column(name = "THUMBNAIL_URL")
     private String thumbnailUrl;
 

@@ -32,6 +32,7 @@ public class JavaAuthService {
     //Generate the Secret Key
     SecretKey getSignKey()
     {
+
         return Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
     }
     //Generate token for the user with the generated Secret key: with id, email and role.

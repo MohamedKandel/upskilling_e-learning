@@ -6,6 +6,7 @@ public class LoginResponseDTO {
 
     UserDTO user;
     String token;
+    //EXPIRY TIME
 
     public LoginResponseDTO() {
     }

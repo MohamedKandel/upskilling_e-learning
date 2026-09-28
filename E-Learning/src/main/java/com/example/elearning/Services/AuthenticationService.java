@@ -48,6 +48,7 @@ public class AuthenticationService {
         //Registration Service:
         public GeneralResponse<?> RegisterUser(AuthRequestDTO request) {
             try {
+                //switch case is better
                 if (request.getRole() == Role.STUDENT) {
                     Optional<Student> existingStudent = this._StudentRepo.findByEmail(request.getEmail());
 
@@ -190,14 +191,10 @@ public class AuthenticationService {
             );
         }
     }
-
-
-
-
-
-
-
 }
+
+
+
 
 
 
