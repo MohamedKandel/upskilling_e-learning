@@ -23,6 +23,7 @@ CREATE TABLE SYS_USER
 --User/Role(Instructor) -----   course(pk + instructorId FK)
 --thumbnail : image
 --Course will have one status: one to many
+--Prevents full table locks on SYS_COURSE when deleting or updating rows in the referenced SYS_USER table
 CREATE TABLE SYS_COURSE
 (
     COURSE_ID      RAW(16) NOT NULL,
@@ -88,7 +89,5 @@ CREATE TABLE SYS_Instructor
     Experience_Years NUMBER(11),
     CONSTRAINT Instructor_FK FOREIGN KEY (USER_ID) REFERENCES SYS_USER(USER_ID)
 );
-
-
 
 
