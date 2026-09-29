@@ -9,9 +9,12 @@ import com.example.Elearning.Models.Enrollment;
 
 public interface EnrollmentRepository extends JpaRepository<Enrollment, UUID> {
 
-    boolean existsByStudent_AccountIdAndCourse_Id(int studentId, UUID courseId);
+    boolean existsByStudent_AccountIdAndCourse_CourseId(
+            int studentId,
+            UUID courseId
+    );
 
     List<Enrollment> findByStudent_AccountId(int studentId);
 
-    List<Enrollment> findByCourse_Id(UUID courseId);
+    List<Enrollment> findByCourse_CourseId(UUID courseId);
 }
