@@ -16,7 +16,7 @@ import com.example.Elearning.Repositories.RoleRepository;
 import com.example.Elearning.Repositories.UserRepository;
 
 import com.example.Elearning.Security.JwtService;
-
+import org.springframework.transaction.annotation.Transactional;
 @Service
 public class AuthService {
 
@@ -38,7 +38,7 @@ public class AuthService {
     }
 
     // ================= REGISTER =================
-
+    @Transactional 
     public RegisterResponse register(RegisterRequest request) {
         return register(request, null);
     }

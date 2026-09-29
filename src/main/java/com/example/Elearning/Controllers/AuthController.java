@@ -1,3 +1,4 @@
+
 package com.example.Elearning.Controllers;
 
 import java.io.IOException;
@@ -25,40 +26,18 @@ public class AuthController {
         this.authService = authService;
     }
 
-    // ================= REGISTER JSON =================
-
-    @PostMapping(
-        value = "/register",
-        consumes = MediaType.APPLICATION_JSON_VALUE
-    )
-    public ResponseEntity<ApiResponse<RegisterResponse>> register(
-            @RequestBody RegisterRequest request) {
-
-        RegisterResponse data = authService.register(request);
-
-        ApiResponse<RegisterResponse> response =
-                new ApiResponse<>(
-                        200,
-                        true,
-                        "Registration successful",
-                        data
-                );
-
-        return ResponseEntity.ok(response);
-    }
-
-    // ================= REGISTER WITH CV =================
-
     @PostMapping(
         value = "/register",
         consumes = MediaType.MULTIPART_FORM_DATA_VALUE
     )
-    public ResponseEntity<ApiResponse<RegisterResponse>> registerWithCv(
+    public ResponseEntity<ApiResponse<RegisterResponse>> register(
+
             @RequestParam String name,
             @RequestParam String email,
             @RequestParam String password,
             @RequestParam int roleId,
             @RequestParam(required = false) MultipartFile cv)
+
             throws IOException {
 
         RegisterRequest request = new RegisterRequest();
@@ -87,8 +66,6 @@ public class AuthController {
         return ResponseEntity.ok(response);
     }
 
-    // ================= LOGIN =================
-
     @PostMapping("/login")
     public ResponseEntity<ApiResponse<LoginResponse>> login(
             @RequestBody LoginRequest request) {
@@ -106,3 +83,4 @@ public class AuthController {
         return ResponseEntity.ok(response);
     }
 }
+
