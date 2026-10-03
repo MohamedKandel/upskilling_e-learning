@@ -1,4 +1,7 @@
+
 package com.example.Elearning.Controllers;
+
+import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -7,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import com.example.Elearning.DTOs.ApiResponse;
 import com.example.Elearning.DTOs.CourseResponse;
 import com.example.Elearning.DTOs.CourseRequest;
+import com.example.Elearning.DTOs.UpdateCourseRequest;
 import com.example.Elearning.Models.Instructor;
 import com.example.Elearning.Models.User;
 import com.example.Elearning.Services.CourseService;
@@ -43,4 +47,33 @@ public class CourseController {
 
         return ResponseEntity.ok(response);
     }
+
+    @PutMapping("/{courseId}")
+    public ResponseEntity<ApiResponse<CourseResponse>> updateCourse(
+            @PathVariable UUID courseId,
+            @RequestBody UpdateCourseRequest request,
+            Authentication authentication) {
+
+        User user = (User) authentication.getPrincipal();
+
+        Instructor instructor = (Instructor) user;
+
+        CourseResponse data =
+                courseService.updateCourse(
+                        courseId,
+                        request,
+                        instructor
+                );
+
+        ApiResponse<CourseResponse> response =
+                new ApiResponse<>(
+                        200,
+                        true,
+                        "Course updated successfully",
+                        data
+                );
+
+        return ResponseEntity.ok(response);
+    }
 }
+
