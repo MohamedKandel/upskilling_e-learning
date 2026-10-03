@@ -38,11 +38,14 @@ public class AuthService {
     }
 
     // ================= REGISTER =================
-    @Transactional 
+   
     public RegisterResponse register(RegisterRequest request) {
         return register(request, null);
     }
 
+
+    
+     @Transactional 
     public RegisterResponse register(RegisterRequest request, byte[] cv) {
 
         // Check if email already exists
