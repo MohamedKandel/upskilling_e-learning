@@ -11,8 +11,12 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Entity 
+@Entity
 @Table(
     name = "enrollment",
     uniqueConstraints = {
@@ -21,52 +25,22 @@ import jakarta.persistence.UniqueConstraint;
         )
     }
 )
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Enrollment {
 
-    @Id 
-    @GeneratedValue (strategy = GenerationType.UUID)
-    @Column (name = "enrollment_id")
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "enrollment_id")
     private UUID enrollmentId;
 
-    @ManyToOne 
-    @JoinColumn (name = "student_id", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "student_id", nullable = false)
     private Student student;
 
     @ManyToOne
     @JoinColumn(name = "course_id", nullable = false)
     private Course course;
-
-    public Enrollment() {}
-
-    public Enrollment(UUID enrollmentId, Student student, Course course) {
-        this.enrollmentId = enrollmentId;
-        this.student = student;
-        this.course = course;
-    }
-
-    public UUID getEnrollmentId() {
-        return enrollmentId;
-    }
-
-    public void setEnrollmentId(UUID enrollmentId) {
-        this.enrollmentId = enrollmentId;
-    }
-
-    public Student getStudent() {
-        return student;
-    }
-
-    public void setStudent(Student student) {
-        this.student = student;
-    }
-
-
-    public Course getCourse() {
-        return course;
-    
-    }
-
-    public void setCourse(Course course) {
-        this.course = course;
-    }
 }

@@ -1,16 +1,19 @@
 package com.example.Elearning.DTOs;
 
+import java.util.UUID;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ApiResponse<T> {
+public class SessionRequest {
 
-    private int statusCode;
-    private boolean success;
-    private String message;
-    private T data;
+    private UUID courseId;
+    private String title;
+    private String description;
 }

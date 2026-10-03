@@ -3,14 +3,16 @@ package com.example.Elearning.DTOs;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ApiResponse<T> {
+public class UpdateCourseRequest {
 
-    private int statusCode;
-    private boolean success;
-    private String message;
-    private T data;
+    private String title;
+    private String description;
+    private String thumbnail;
 }
+

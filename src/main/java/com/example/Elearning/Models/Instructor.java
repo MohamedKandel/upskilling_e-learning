@@ -8,10 +8,18 @@ import jakarta.persistence.Lob;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "instructor")
 @PrimaryKeyJoinColumn(name = "account_id")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Instructor extends User {
 
     @Lob
@@ -20,31 +28,4 @@ public class Instructor extends User {
 
     @OneToMany(mappedBy = "instructor")
     private List<Course> courses;
-
-    public Instructor() {
-    }
-
-    public Instructor(byte[] cv) {
-        this.cv = cv;
-    }
-
-    public Instructor(int accountId, String name, String email, String password, Role role) {
-        super(accountId, name, email, password, role);
-    }
-
-    public byte[] getCv() {
-        return cv;
-    }
-
-    public void setCv(byte[] cv) {
-        this.cv = cv;
-    }
-
-    public List<Course> getCourses() {
-        return courses;
-    }
-
-    public void setCourses(List<Course> courses) {
-        this.courses = courses;
-    }
 }
